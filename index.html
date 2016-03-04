@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <style>
+      rect.bordered {
+        stroke: #E6E6E6;
+        stroke-width:2px;   
+      }
+
+      text.mono {
+        font-size: 9pt;
+        font-family: Consolas, courier;
+        fill: #aaa;
+      }
+
+      text.axis-workweek {
+        fill: #000;
+      }
+
+      text.axis-worktime {
+        fill: #000;
+      }
+
+      #legend {
+        position: absolute;
+        top: 300px;
+        left: 700px;
+        font-family: sans-serif;
+      }
+
+      div.tooltip { 
+        position: absolute;     
+        text-align: center;     
+        width: 300px;          
+        height: 28px;         
+        padding: 2px;       
+        font: 12px sans-serif;    
+        background: lightsteelblue; 
+        border: 0px;    
+        border-radius: 8px;     
+        pointer-events: none;     
+      }
+    </style>
+    <script src="http://d3js.org/d3.v3.js"></script>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <div id="legend"></div>
+    </div>
+    <script type="text/javascript">
+      var margin = { top: 100, right: 0, bottom: 100, left: 100 },
+          width =   500 - margin.left - margin.right,
+          height = 1000 - margin.top - margin.bottom,
+          gridSize = Math.floor(width / 5),
+          legendElementWidth = gridSize*2,
+          buckets = 9,
+          colors = ["#ffffff","#ffe5e5","#ffcccc","#ffb2b2","#ff9999","#ff7f7f","#ff6666","#ff4c4c","#ff3232", "#cc0000", "#b20000", "#990000", "#7f0000", "#660000", "#4c0000"], // alternatively colorbrewer.YlGnBu[9]
+          days = ["Mon", "Tue", "Wed", "Thu", "Fri"],
+          times = ["8am", "9am", "10am", "11am", "12am", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm"];
+
+      var svg = d3.select("#chart").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)  
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var dayLabels = svg.selectAll(".dayLabel")
+          .data(days)
+          .enter().append("text")
+            .text(function (d) { return d; })
+            .attr("y", -70)
+            .attr("x", function (d, i) { return i * gridSize + 40 })
+            .style("text-anchor", "end")
+            .attr("transform", "translate(-6," + gridSize / 1.5 + ")")
+            .attr("class", function (d, i) { return ((i >= 0 && i <= 4) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); });
+
+      var timeLabels = svg.selectAll(".timeLabel")
+          .data(times)
+          .enter().append("text")
+            .text(function(d) { return d; })
+            .attr("y", function(d, i) { return i * gridSize + 50; })
+            .attr("x", -80)
+            .style("text-anchor", "middle")
+            .attr("transform", "translate(" + gridSize / 2 + ", -6)")
+            .attr("class", function(d, i) { return ((i >= 7 && i <= 16) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
+
+            // Define the div for the tooltip
+      var div = d3.select("body").append("div") 
+          .attr("class", "tooltip")       
+          .style("opacity", 0);
+
+      var heatmapChart = function(tsvFile, excludedNames) {
+        var timeData = [];
+        var names = []
+        for (var i = 0; i < 50; i++) {
+          timeData[i] = { day: 0, hour: 0, value: 0, people: [], classes: [] };
+        }
+
+        d3.tsv(tsvFile,
+        function(d) {
+          if (d.hour >= 8 && d.hour < 18 && excludedNames.indexOf(d.value) == -1) {
+            var index = (parseInt(d.day)-1)*10+parseInt(d.hour)-8;
+            timeData[index].day = d.day;
+            timeData[index].hour = d.hour;
+            timeData[index].value++;
+            timeData[index].people.push(d.value);
+            timeData[index].classes.push(d.class);
+            if (names.indexOf(d.value) == -1) {
+              names.push(d.value);
+            }
+          }
+        },
+        function(error, data) {
+          data = timeData;
+
+          var colorScale = d3.scale.quantile()
+              .domain([0, buckets - 1, d3.max(data, function (d) { 
+                return d.value; })])
+              .range(colors);
+
+          var cards = svg.selectAll(".hour")
+              .data(data, function(d) {return d.day+':'+d.hour;});
+
+          cards.append("title");
+          cards.enter().append("rect")
+              .attr("y", function(d) { return (d.hour - 8) * gridSize; })
+              .attr("x", function(d) { return (d.day - 1) * gridSize; })
+              .attr("rx", 4)
+              .attr("ry", 4)
+              .attr("class", "hour bordered")
+              .attr("width", gridSize)
+              .attr("height", gridSize)
+              .style("fill", colors[0]);
+
+          cards.transition().duration(1000)
+              .style("fill", function(d) { return colors[d.value]; });
+
+          cards.on("mouseover", function(d) {
+            var titleText = "";
+            peopleArray = d.people;
+            classesArray = d.classes;
+            for (var i = 0; i < peopleArray.length; i++) {
+              titleText += (peopleArray[i] + " - " + classesArray[i] + "<br/>");
+            }   
+            div.transition()    
+                .duration(200)    
+                .style("opacity", .9);    
+            div.html(titleText)  
+                .style("left", (d3.event.pageX) + "px")   
+                .style("top", (d3.event.pageY - 28) + "px")
+                .style("height", 15*peopleArray.length + "px");
+            })          
+            .on("mouseout", function(d) {   
+                div.transition()    
+                    .duration(500)    
+                    .style("opacity", 0); 
+            });
+
+          // cards.append("svg:title").text(function(d) {
+          //   var titleText = "";
+          //   peopleArray = d.people;
+          //   classesArray = d.classes;
+          //   for (var i = 0; i < peopleArray.length; i++) {
+          //     titleText += (peopleArray[i] + " - " + classesArray[i] + "\n");
+          //   }
+          //  return titleText; 
+          // });
+          
+          cards.exit().remove();
+
+          d3.select("#legend")
+            .selectAll("input")
+            .data(names)
+            .enter()
+            .append('div')
+            .attr("style", "margin-bottom: 10px")
+            .append('label')
+                .attr('for',function(d,i){ return d; })
+                .text(function(d) { return d; })
+            .append("input")
+                .attr("checked", true)
+                .attr("type", "checkbox")
+                .attr("id", function(d,i) { return d; })
+                .attr("onClick", "change(this.id)");
+
+        });  
+      };
+
+      var excludedNames = [];
+
+      function change(name){
+        var index = excludedNames.indexOf(name);
+        if (index == -1) {
+          excludedNames.push(name);
+        } else {
+          excludedNames.splice(index, 1);
+        }
+        heatmapChart("timetables.tsv", excludedNames);
+      }
+
+      heatmapChart("timetables.tsv", []);
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+day	hour	value	class
+2	8	Marcus	compsys 726 lecture
+2	9	Marcus	compsys 726 lecture
+2	11	Marcus	compsys 726 lab
+2	12	Marcus	compsys 726 lab
+2	13	Marcus	compsys 701 lab
+2	14	Marcus	compsys 701 lab
+2	15	Marcus	compsys 701 lab
+3	9	Marcus	compsys 701 lecture
+3	10	Marcus	compsys 701 lecture
+4	8	Marcus	compsys 726 lecture
+4	9	Marcus	compsys 726 lecture
+4	15	Marcus	electeng 722 lecture
+4	16	Marcus	electeng 722 lecture
+5	8	Marcus	compsys 726 workshop
+5	9	Marcus	compsys 701 lecture
+5	10	Marcus	compsys 701 lecture
+5	14	Marcus	electeng 722 lecture
+5	15	Marcus	electeng 722 lecture
+1	10	John	softeng 751 lecture
+1	11	John	softeng 751 lecture
+2	11	John	softeng 701 lecture
+2	12	John	softeng 701 lecture
+2	13	John	softeng 750 lecture
+2	14	John	softeng 750 lecture
+3	9	John	softeng 701 lecture
+3	10	John	softeng 701 lecture
+3	11	John	softeng 751 lecture
+3	12	John	softeng 751 lecture
+3	14	John	softeng 750 lecture
+3	15	John	softeng 750 lecture
+4	13	John	softeng 701 lab
+4	14	John	softeng 701 lab
+1	10	Chang Kon	softeng 751 lecture
+1	11	Chang Kon	softeng 751 lecture
+2	11	Chang Kon	softeng 701 lecture
+2	12	Chang Kon	softeng 701 lecture
+2	13	Chang Kon	softeng 750 lecture
+2	14	Chang Kon	softeng 750 lecture
+3	9	Chang Kon	softeng 701 lecture
+3	10	Chang Kon	softeng 701 lecture
+3	11	Chang Kon	softeng 751 lecture
+3	12	Chang Kon	softeng 751 lecture
+3	14	Chang Kon	softeng 750 lecture
+3	15	Chang Kon	softeng 750 lecture
+4	13	Chang Kon	softeng 701 lab
+4	14	Chang Kon	softeng 701 lab
+1	10	Wesley	softeng 751 lecture
+1	11	Wesley	softeng 751 lecture
+2	11	Wesley	softeng 701 lecture
+2	12	Wesley	softeng 701 lecture
+2	13	Wesley	softeng 750 lecture
+2	14	Wesley	softeng 750 lecture
+3	9	Wesley	softeng 701 lecture
+3	10	Wesley	softeng 701 lecture
+3	11	Wesley	softeng 751 lecture
+3	12	Wesley	softeng 751 lecture
+3	14	Wesley	softeng 750 lecture
+3	15	Wesley	softeng 750 lecture
+4	13	Wesley	softeng 701 lab
+4	14	Wesley	softeng 701 lab
+1	9	Wesley	biosci 201 lecture
+2	9	Wesley	biosci 201 lecture
+4	9	Wesley	biosci 201 lecture
+4	10	Wesley	biosci 201 lab (fortnightly)
+4	11	Wesley	biosci 201 lab (fortnightly)
+4	12	Wesley	biosci 201 lab (fortnightly)
+1	8	Kirwin	civil 713 lecture
+1	10	Kirwin	civil 790 lecture
+1	11	Kirwin	civil 790 lecture
+1	12	Kirwin	civil 721 lecture
+2	12	Kirwin	civil 721 lecture
+3	9	Kirwin	civil 713 lecture
+3	10	Kirwin	civil 713 lecture
+3	12	Kirwin	civil 721 lecture
+3	14	Kirwin	civil 705A lecture
+4	9	Kirwin	civil 713 tutorial
+4	13	Kirwin	civil 705A independent study
+5	10	Kirwin	civil 790 tutorial
+1	11	Andon	something
+1	12	Andon	softeng 251 lecture
+1	13	Andon	softeng 251 lecture
+1	15	Andon	engsci 213 lecture
+2	8	Andon	something
+2	14	Andon	compsys 201 lecture
+2	15	Andon	compsys 201 lecture
+3	15	Andon	engsci 213 lecture
+3	16	Andon	softeng 251 lecture
+3	17	Andon	softeng 251 lecture 
+4	10	Andon	softeng 251 lab
+4	11	Andon	softeng 251 lab
+4	15	Andon	engsci 213 lecture
+5	10	Andon	softeng 251 lab
+5	11	Andon	softeng 251 lab
+5	12	Andon	compsys 201 lecture
+5	13	Andon	compsys 201 lecture
+5	15	Andon	engsci 213 lecture
